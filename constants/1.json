@@ -1,0 +1,30 @@
+[
+  {
+    "Date": "date",
+    "Evaluation": {
+      "Здоров'я": 1,
+      "Фінанси": 2,
+      "Кар'єра": 3,
+      "Особистісний ріст": 4,
+      "Духовний розвиток": 5,
+      "Оточення": 6,
+      "Яскравість життя": 7,
+      "Стосунки, сім’я": 8
+    },
+    "Owner": "id"
+  },
+  {
+    "Date": "date",
+    "Evaluation": {
+      "Health": 1,
+      "Money": 2,
+      "Career": 3,
+      "Personal growth": 4,
+      "Spirituality": 5,
+      "Environment": 6,
+      "Fun": 7,
+      "Relationships, family": 8
+    },
+    "Owner": "id"
+  }
+]
