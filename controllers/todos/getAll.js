@@ -2,16 +2,26 @@ const Todo = require("../../models/todo");
 const { ctrlWrapper } = require("../../decorators");
 
 const getAll = async (req, res) => {
-  const perPage = 10;
+  const perPage = 3;
   const { _id: owner } = req.user;
-  const { page = 1, limit = perPage } = req.query;
+  const { page = 1, limit = perPage, query } = req.query;
   const skip = (page - 1) * limit;
 
-  const total = await Todo.countDocuments(owner);
+  let queryParametrs = { owner };
+
+  if (query) {
+    const regexQuery = { $regex: query, $options: "i" };
+    queryParametrs = {
+      ...queryParametrs,
+      $or: [{ description: regexQuery }, { title: regexQuery }],
+    };
+  }
+
+  const total = await Todo.countDocuments(queryParametrs);
 
   const totalPages = Math.ceil(total / perPage);
 
-  let todos = await Todo.find({ owner }, "", {
+  let todos = await Todo.find(queryParametrs, "", {
     skip,
     limit,
   }).sort({ updatedAt: -1 });
@@ -29,7 +39,7 @@ const getAll = async (req, res) => {
     })
   );
 
-  res.status(200).json({ page, perPage, totalPages, todos });
+  res.status(200).json({ page, perPage, totalPages, total, todos });
 };
 
 module.exports = {
