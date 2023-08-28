@@ -16,7 +16,7 @@
   "consumes": ["application/json", "multipart/form-data"],
   "produces": ["application/json"],
   "servers": [
-    { "url": "https://planner-backend.onrender.com/api" },
+    { "url": "https://planner-backend-se10.onrender.com/api" },
     { "url": "http://localhost:3001/api" }
   ],
   "tags": [
