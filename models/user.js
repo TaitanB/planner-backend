@@ -1,8 +1,8 @@
 const { Schema, model } = require("mongoose");
 
 const { handleMongooseError } = require("../helpers");
-// const todoSchema = require("./todo");
-const { emailRegexp, userSubscription } = require("../constants/users");
+
+const { emailRegexp, userSubscription } = require("../constants/constants");
 
 const userSchema = new Schema(
   {
@@ -21,10 +21,6 @@ const userSchema = new Schema(
       minlength: 6,
       required: [true, "Set password for user"],
     },
-    // todos: {
-    //   type: [todoSchema],
-    //   default: [],
-    // },
     token: {
       type: String,
     },

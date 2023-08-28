@@ -1,0 +1,390 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Wheel Of Life Planner",
+    "description": "This is the Swagger documentation for interacting with our application's API.",
+    "contact": {
+      "name": "Wheel Of Life Planner",
+      "url": "https://taitanb.github.io/planner-frontend/"
+    },
+    "version": "1.0.0"
+  },
+  "externalDocs": {
+    "description": "API for 'Wheel Of Life Planner' application",
+    "url": "https://github.com/TaitanB/final-project-backend"
+  },
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
+  "servers": [
+    { "url": "https://planner-backend.onrender.com/api" },
+    { "url": "http://localhost:3001/api" }
+  ],
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Users endpoints"
+    }
+  ],
+  "paths": {
+    "/users/register": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "New user registration",
+        "produces": ["application/json"],
+        "requestBody": {
+          "description": "The request body user registration",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The user is registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "The JWT access token"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/UserResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "content": {}
+          },
+          "409": {
+            "description": "Email in use",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User log in",
+        "produces": ["application/json"],
+        "requestBody": {
+          "description": "The request body user log in",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "description": "The JWT access token"
+                    },
+                    "user": {
+                      "$ref": "#/components/schemas/UserResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request body",
+            "content": {}
+          },
+          "401": {
+            "description": "The email or password is incorrect",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "User logout",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "204": {
+            "description": "Successful user logout",
+            "content": {}
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users": {
+      "put": {
+        "tags": ["Users"],
+        "summary": "Update user data",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "requestBody": {
+          "description": "Request to update user data",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User data updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/UpdateUserResponse"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/users/current": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get data current user",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Current user data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["name", "email", "password"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "minLength": 2,
+            "maxLength": 16,
+            "example": "Qwerty"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "format": "email",
+            "example": "qwerty@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password",
+            "minLength": 6,
+            "maxLength": 16,
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)",
+            "example": "Qwerty123"
+          }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "format": "email",
+            "example": "qwerty@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "description": "User password",
+            "minLength": 6,
+            "maxLength": 16,
+            "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*d)",
+            "example": "Qwerty123"
+          }
+        }
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User id",
+            "example": "nfuwjhretyhbvcbuiwrhty"
+          },
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "example": "Mango"
+          },
+          "email": {
+            "type": "string",
+            "description": "User email",
+            "example": "mango@mail.com"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "User's birthday",
+            "example": "21-08-2010",
+            "default": ""
+          },
+          "phone": {
+            "type": "string",
+            "description": "User's phone",
+            "example": "+380671234567",
+            "default": ""
+          },
+          "city": {
+            "type": "string",
+            "description": "User's city",
+            "example": "Lviv",
+            "default": ""
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "User photo url",
+            "example": "https://example.com/avatar.jpg"
+          }
+        }
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "minLength": 2,
+            "maxLength": 16,
+            "example": "Mango"
+          },
+          "avatar": {
+            "type": "string",
+            "description": "User photo",
+            "format": "binary"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "User's birthday. Please use DD-MM-YYYY",
+            "pattern": "^\\d{2}-\\d{2}-\\d{4}$",
+            "example": "21-08-2010",
+            "default": ""
+          },
+          "phone": {
+            "type": "string",
+            "description": "User's phone",
+            "pattern": "^+380d{9}$",
+            "example": "+380671234567",
+            "default": ""
+          },
+          "city": {
+            "type": "string",
+            "description": "User's city",
+            "example": "Lviv",
+            "default": ""
+          }
+        }
+      },
+      "UpdateUserResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "User id",
+            "example": "1259385yjvdsa95kf865098"
+          },
+          "name": {
+            "type": "string",
+            "description": "User name",
+            "example": "Mango"
+          },
+          "avatarURL": {
+            "type": "string",
+            "description": "User photo url",
+            "example": "https://example.com/avatar.jpg"
+          },
+          "birthday": {
+            "type": "string",
+            "description": "User's birthday",
+            "example": "21-08-2010",
+            "default": ""
+          },
+          "phone": {
+            "type": "string",
+            "description": "User's phone",
+            "example": "+380671234567",
+            "default": ""
+          },
+          "city": {
+            "type": "string",
+            "description": "User's city",
+            "example": "Lviv",
+            "default": ""
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

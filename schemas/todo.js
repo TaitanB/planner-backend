@@ -3,7 +3,7 @@ const Joi = require("joi");
 const addTodoSchema = Joi.object({
   title: Joi.string().required(),
   description: Joi.string(),
-  plannedDate: Joi.date().required(),
+  plannedDate: Joi.string().required(),
 });
 
 const completedTodoSchema = Joi.object({

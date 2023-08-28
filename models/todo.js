@@ -23,6 +23,10 @@ const todoSchema = new Schema(
       type: Date,
       default: null,
     },
+    archivedDate: {
+      type: Date,
+      default: null,
+    },
     owner: {
       type: Schema.Types.ObjectId,
       ref: "user",

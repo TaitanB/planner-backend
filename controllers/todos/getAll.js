@@ -1,8 +1,8 @@
 const Todo = require("../../models/todo");
 const { ctrlWrapper } = require("../../decorators");
+const { perPage } = require("../../constants/constants");
 
 const getAll = async (req, res) => {
-  const perPage = 3;
   const { _id: owner } = req.user;
   const { page = 1, limit = perPage, query } = req.query;
   const skip = (page - 1) * limit;
