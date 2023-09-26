@@ -2,31 +2,63 @@ const { Schema, model } = require("mongoose");
 
 const { handleMongooseError } = require("../helpers");
 
-const { emailRegexp, userSubscription } = require("../constants/constants");
+const {
+  nameRegex,
+  birthdayRegex,
+  emailRegex,
+  passwordRegex,
+  phoneRegex,
+  cityRegex,
+  userSubscription,
+} = require("../constants/constants");
 
 const userSchema = new Schema(
   {
+    accessToken: {
+      type: String,
+    },
+    refreshToken: {
+      type: String,
+    },
     name: {
       type: String,
-      required: true,
+      match: nameRegex,
+      required: [true, "Name is required"],
     },
     email: {
       type: String,
-      match: emailRegexp,
+      match: emailRegex,
       required: [true, "Email is required"],
       unique: true,
     },
     password: {
       type: String,
       minlength: 6,
+      match: passwordRegex,
       required: [true, "Set password for user"],
-    },
-    token: {
-      type: String,
     },
     avatarURL: {
       type: String,
       required: true,
+    },
+    birthday: {
+      type: String,
+      match: birthdayRegex,
+      default: "",
+    },
+    phone: {
+      type: String,
+      match: phoneRegex,
+      default: "",
+    },
+    city: {
+      type: String,
+      match: cityRegex,
+      default: "",
+    },
+    priority: {
+      type: [String],
+      default: [],
     },
     subscription: {
       type: String,

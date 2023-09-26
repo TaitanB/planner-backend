@@ -28,6 +28,6 @@ router.patch(
 
 router.patch("/completed/:todoId", unauthorized, isValidId, completedTodo);
 
-router.patch("/delete/:todoId", unauthorized, isValidId, deleteById);
+router.delete("/delete/:todoId", unauthorized, isValidId, deleteById);
 
 module.exports = router;

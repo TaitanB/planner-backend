@@ -5,6 +5,7 @@ const {
   login,
   logout,
   current,
+  refresh,
   updateSubscription,
   updateAvatar,
 } = require("../../controllers/auth");
@@ -13,6 +14,7 @@ const {
   userRegisterSchema,
   userLoginSchema,
   userSubscriptionSchema,
+  refreshSchema,
 } = require("../../schemas/users");
 
 const { validateBody } = require("../../decorators");
@@ -27,6 +29,8 @@ router.post("/login", validateBody(userLoginSchema), login);
 router.post("/logout", unauthorized, logout);
 
 router.get("/current", unauthorized, current);
+
+router.post("/refresh", validateBody(refreshSchema), refresh);
 
 router.patch(
   "/",

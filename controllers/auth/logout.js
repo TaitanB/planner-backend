@@ -4,13 +4,18 @@ const { ctrlWrapper } = require("../../decorators");
 
 const logout = async (req, res) => {
   const { _id } = req.user;
-  const user = await User.findByIdAndUpdate(_id, { token: "" });
+  const user = await User.findByIdAndUpdate(_id, {
+    accessToken: "",
+    refreshToken: "",
+  });
 
   if (!user) {
     throw HttpError(401, "Not authorized");
   }
 
-  res.status(204).json();
+  res.json({
+    message: "Logout success",
+  });
 };
 
 module.exports = {

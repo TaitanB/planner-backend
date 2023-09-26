@@ -9,7 +9,7 @@ const deleteById = async (req, res) => {
   const result = await Todo.findOneAndRemove({
     $and: [{ _id: todoId }, { owner }],
   });
-
+  console.log(result);
   if (!result) {
     throw HttpError(404, "Todo not found");
   }

@@ -7,7 +7,8 @@ const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 const { v4 } = require("uuid");
 
-const { SECRET_KEY } = process.env;
+// const { SECRET_KEY } = process.env;
+const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env;
 // const { BASE_URL } = process.env;
 
 const register = async (req, res) => {
@@ -42,16 +43,31 @@ const register = async (req, res) => {
     id,
   };
 
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
-  await User.findByIdAndUpdate(id, { token, newUser });
+  // const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
+
+  const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
+    expiresIn: "5m",
+  });
+  const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY, {
+    expiresIn: "7d",
+  });
+
+  await User.findByIdAndUpdate(id, { accessToken, refreshToken, newUser });
 
   res.status(201).json({
-    token,
+    accessToken,
+    refreshToken,
+    newUser: true,
     user: {
+      _id: id,
       name: newUser.name,
       email: newUser.email,
-      subscription: newUser.subscription,
+      birthday: newUser.birthday,
+      phone: newUser.phone,
+      city: newUser.city,
       avatarURL: newUser.avatarURL,
+      subscription: newUser.subscription,
+      priority: newUser.priority,
     },
   });
 };
