@@ -4,9 +4,9 @@ const { perPage } = require("../../constants/constants");
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
-  const { page = 1, limit = perPage, query } = req.query;
+  const { page = 1, limit = perPage, query, status } = req.query;
   const skip = (page - 1) * limit;
-  console.log(owner);
+  // console.log(owner);
   let queryParametrs = { owner };
 
   if (query) {
@@ -15,6 +15,14 @@ const getAll = async (req, res) => {
       ...queryParametrs,
       $or: [{ description: regexQuery }, { title: regexQuery }],
     };
+  }
+
+  if (status === "completed") {
+    queryParametrs.completedDate = { $ne: null };
+  } else if (status === "overdue") {
+    queryParametrs.overdueDate = { $ne: null };
+  } else if (status === "archived") {
+    queryParametrs.archivedDate = { $ne: null };
   }
 
   const total = await Todo.countDocuments(queryParametrs);

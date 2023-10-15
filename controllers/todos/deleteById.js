@@ -5,7 +5,7 @@ const { ctrlWrapper } = require("../../decorators");
 const deleteById = async (req, res) => {
   const { todoId } = req.params;
   const { _id: owner } = req.user;
-
+  // console.log(req.params);
   const result = await Todo.findOneAndRemove({
     $and: [{ _id: todoId }, { owner }],
   });

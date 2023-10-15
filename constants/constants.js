@@ -6,7 +6,7 @@ const birthdayRegex = /^(0[1-9]|[12]\d|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
 const cityRegex =
   /^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ'\s]+(?:,\s*[A-Za-zА-Яа-яЁёІіЇїЄєҐґ'\s]+)*$/;
 const userSubscription = ["starter", "pro", "business"];
-const perPage = 8;
+const perPage = 4;
 
 module.exports = {
   nameRegex,

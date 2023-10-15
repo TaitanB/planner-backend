@@ -23,6 +23,10 @@
     {
       "name": "Users",
       "description": "Users endpoints"
+    },
+    {
+      "name": "Todos",
+      "description": "Todos endpoints"
     }
   ],
   "paths": {
@@ -209,8 +213,322 @@
           }
         }
       }
+    },
+
+    "/todos": {
+      "get": {
+        "tags": ["Todos"],
+        "summary": "Get all todos",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query for todos"
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string",
+              "enum": ["completed", "overdue", "archived"]
+            },
+            "description": "Filter todos by status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "string",
+                      "description": "1"
+                    },
+                    "perPage": {
+                      "type": "string",
+                      "description": "12"
+                    },
+                    "totalPages": {
+                      "type": "string",
+                      "description": "452"
+                    },
+                    "todos": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/TodoResponse"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      },
+      "post": {
+        "tags": ["Todos"],
+        "summary": "Add new todo",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "requestBody": {
+          "description": "Todo data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TodoAddRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Todo added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TodoResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "Invalid token"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/todos/delete/{id}": {
+      "delete": {
+        "tags": ["Todos"],
+        "summary": "Delete a todo by id",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Todo's id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Todo not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/todos/priority/add/{id}": {
+      "patch": {
+        "tags": ["Todos"],
+        "summary": "Add todo to priority",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "Todo's id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo add to priority successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Priority"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Todo not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/todos/priority/delete/{id}": {
+      "patch": {
+        "tags": ["Todos"],
+        "summary": "Delete todo to priority",
+        "security": [{ "Bearer": [] }],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "type": "string",
+            "description": "Todo's id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Todo deleted from priority",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "404": {
+            "description": "Todo not found",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/todos/priority": {
+      "get": {
+        "tags": ["Todos"],
+        "summary": "Get priority todos",
+        "security": [{ "Bearer": [] }],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Page number for pagination"
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "description": "Limit of items per page"
+          },
+          {
+            "in": "query",
+            "name": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Search query for todos"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "string",
+                      "description": "1"
+                    },
+                    "perPage": {
+                      "type": "string",
+                      "description": "12"
+                    },
+                    "totalPages": {
+                      "type": "string",
+                      "description": "18"
+                    },
+                    "priority": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Priority"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {}
+          }
+        }
+      }
     }
   },
+
   "components": {
     "schemas": {
       "RegistrationRequest": {
@@ -375,6 +693,96 @@
             "description": "User's city",
             "example": "Lviv",
             "default": ""
+          },
+          "priority": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "description": "User's priority todos id",
+                  "example": "32143dshtuv2dfyuijhgf45474"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "TodoAddRequest": {
+        "type": "object",
+        "required": ["title", "description", "plannedDate"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "The title of the todo",
+            "minLength": 4,
+            "maxLength": 30,
+            "example": "Name of your todo"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the todo",
+            "minLength": 2,
+            "maxLength": 200,
+            "example": "Description of your todo"
+          },
+          "plannedDate": {
+            "type": "string",
+            "description": "The scheduled date of the case completion.",
+            "example": "29.08.2025"
+          }
+        }
+      },
+      "TodoResponse": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Todo id",
+            "example": "1h23u45iumyhigjfsaitfyg"
+          },
+          "title": {
+            "type": "string",
+            "description": "The title of the todo",
+            "example": "Name of your todo"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the todo",
+            "example": "Description of your todo"
+          },
+          "plannedDate": {
+            "type": "string",
+            "description": "The scheduled date of the case completion.",
+            "example": "29.08.2025"
+          }
+        }
+      },
+      "Priority": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "properties": {
+            "_id": {
+              "type": "string",
+              "description": "User's priority todo id",
+              "example": "32143dshtuv2dfyuijhgf45474"
+            }
+          }
+        }
+      },
+      "DeleteResponse": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Notification of successful deletion"
+          },
+          "deletedTodoId": {
+            "type": "string",
+            "description": "Id of the deleted object"
           }
         }
       }

@@ -6,6 +6,10 @@ const {
   updateById,
   completedTodo,
   deleteById,
+  addPriority,
+  deletePriority,
+  getPriority,
+  archivedTodo,
 } = require("../../controllers/todos");
 
 const { isValidId, unauthorized } = require("../../middlewares");
@@ -28,6 +32,19 @@ router.patch(
 
 router.patch("/completed/:todoId", unauthorized, isValidId, completedTodo);
 
+router.patch("/archived/:todoId", unauthorized, isValidId, archivedTodo);
+
 router.delete("/delete/:todoId", unauthorized, isValidId, deleteById);
+
+router.get("/priority", unauthorized, getPriority);
+
+router.patch("/priority/add/:todoId", unauthorized, isValidId, addPriority);
+
+router.patch(
+  "/priority/delete/:todoId",
+  unauthorized,
+  isValidId,
+  deletePriority
+);
 
 module.exports = router;

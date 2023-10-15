@@ -2,21 +2,20 @@ const Todo = require("../../models/todo");
 const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 
-const updateById = async (req, res) => {
+const archivedTodo = async (req, res) => {
   const { todoId } = req.params;
   const { _id: owner } = req.user;
-  const { description } = req.body;
-  // console.log(todoId);
-  const todoToUpdate = await Todo.findOneAndUpdate(
-    {
-      $and: [{ _id: todoId, owner }],
-    },
-    { description },
-    { new: true }
-  );
+
+  const todoToUpdate = await Todo.findOne({ _id: todoId, owner });
 
   if (!todoToUpdate) {
     throw HttpError(404, "Todo not found");
+  }
+
+  if (todoToUpdate.archivedDate === null) {
+    todoToUpdate.archivedDate = new Date();
+  } else {
+    todoToUpdate.archivedDate = null;
   }
 
   await todoToUpdate.save();
@@ -25,5 +24,5 @@ const updateById = async (req, res) => {
 };
 
 module.exports = {
-  updateById: ctrlWrapper(updateById),
+  archivedTodo: ctrlWrapper(archivedTodo),
 };
