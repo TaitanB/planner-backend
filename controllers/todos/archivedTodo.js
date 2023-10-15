@@ -14,7 +14,8 @@ const archivedTodo = async (req, res) => {
 
   if (todoToUpdate.archivedDate === null) {
     todoToUpdate.archivedDate = new Date();
-  } else {
+  } else if (todoToUpdate.overdueDate !== null) {
+    todoToUpdate.overdueDate = null;
     todoToUpdate.archivedDate = null;
   }
 

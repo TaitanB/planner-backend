@@ -8,6 +8,14 @@ const cityRegex =
 const userSubscription = ["starter", "pro", "business"];
 const perPage = 4;
 
+const StatusEnum = {
+  PRIORITY: "priority",
+  ALL_TODOS: "all_todos",
+  COMPLETED: "completed",
+  OVERDUE: "overdue",
+  ARCHIVED: "archived",
+};
+
 module.exports = {
   nameRegex,
   emailRegex,
@@ -17,4 +25,5 @@ module.exports = {
   cityRegex,
   perPage,
   userSubscription,
+  StatusEnum,
 };

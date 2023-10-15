@@ -1,6 +1,6 @@
 const Todo = require("../../models/todo");
 const { ctrlWrapper } = require("../../decorators");
-const { perPage } = require("../../constants/constants");
+const { perPage, StatusEnum } = require("../../constants/constants");
 
 const getAll = async (req, res) => {
   const { _id: owner } = req.user;
@@ -17,11 +17,11 @@ const getAll = async (req, res) => {
     };
   }
 
-  if (status === "completed") {
+  if (status === StatusEnum.COMPLETED) {
     queryParametrs.completedDate = { $ne: null };
-  } else if (status === "overdue") {
+  } else if (status === StatusEnum.OVERDUE) {
     queryParametrs.overdueDate = { $ne: null };
-  } else if (status === "archived") {
+  } else if (status === StatusEnum.ARCHIVED) {
     queryParametrs.archivedDate = { $ne: null };
   }
 
