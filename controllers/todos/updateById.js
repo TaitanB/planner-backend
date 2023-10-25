@@ -6,7 +6,7 @@ const updateById = async (req, res) => {
   const { todoId } = req.params;
   const { _id: owner } = req.user;
   const { description } = req.body;
-  // console.log(todoId);
+
   const todoToUpdate = await Todo.findOneAndUpdate(
     {
       $and: [{ _id: todoId, owner }],

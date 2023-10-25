@@ -5,11 +5,11 @@ const { ctrlWrapper } = require("../../decorators");
 const deleteById = async (req, res) => {
   const { todoId } = req.params;
   const { _id: owner } = req.user;
-  // console.log(req.params);
+
   const result = await Todo.findOneAndRemove({
     $and: [{ _id: todoId }, { owner }],
   });
-  console.log(result);
+
   if (!result) {
     throw HttpError(404, "Todo not found");
   }

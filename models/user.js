@@ -57,8 +57,11 @@ const userSchema = new Schema(
       default: "",
     },
     priority: {
-      type: [String],
-      default: [],
+      type: Object,
+      todos: {
+        type: [String],
+        default: [],
+      },
     },
     subscription: {
       type: String,

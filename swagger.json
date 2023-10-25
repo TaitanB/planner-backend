@@ -379,7 +379,7 @@
         }
       }
     },
-    "/todos/priority/add/{id}": {
+    "/todos/priority/{id}": {
       "patch": {
         "tags": ["Todos"],
         "summary": "Add todo to priority",

@@ -6,8 +6,7 @@ const {
   updateById,
   completedTodo,
   deleteById,
-  addPriority,
-  deletePriority,
+  togglePriority,
   getPriority,
   archivedTodo,
 } = require("../../controllers/todos");
@@ -38,13 +37,6 @@ router.delete("/delete/:todoId", unauthorized, isValidId, deleteById);
 
 router.get("/priority", unauthorized, getPriority);
 
-router.patch("/priority/add/:todoId", unauthorized, isValidId, addPriority);
-
-router.patch(
-  "/priority/delete/:todoId",
-  unauthorized,
-  isValidId,
-  deletePriority
-);
+router.patch("/priority/:todoId", unauthorized, isValidId, togglePriority);
 
 module.exports = router;

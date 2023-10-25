@@ -6,7 +6,7 @@ const getAll = async (req, res) => {
   const { _id: owner } = req.user;
   const { page = 1, limit = perPage, query, status } = req.query;
   const skip = (page - 1) * limit;
-  // console.log(owner);
+
   let queryParametrs = { owner };
 
   if (query) {

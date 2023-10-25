@@ -7,9 +7,8 @@ const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 const { v4 } = require("uuid");
 
-// const { SECRET_KEY } = process.env;
 const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env;
-// const { BASE_URL } = process.env;
+// const {SERVER_URL } = process.env;
 
 const register = async (req, res) => {
   const { email, password } = req.body;
@@ -33,7 +32,7 @@ const register = async (req, res) => {
   // const verifyUser = {
   //   to: email,
   //   subject: "Verification email",
-  //   html: `<a target="_blank" href="${BASE_URL}/users/verify/${verificationToken}">Click verify email</a>`,
+  //   html: `<a target="_blank" href="${SERVER_URL}/users/verify/${verificationToken}">Click verify email</a>`,
   // };
 
   // await sendEmail(verifyUser);
@@ -42,8 +41,6 @@ const register = async (req, res) => {
   const payload = {
     id,
   };
-
-  // const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
 
   const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
     expiresIn: "5m",

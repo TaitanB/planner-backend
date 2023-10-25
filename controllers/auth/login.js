@@ -5,7 +5,6 @@ const User = require("../../models/user");
 const { HttpError } = require("../../helpers");
 const { ctrlWrapper } = require("../../decorators");
 
-// const { SECRET_KEY } = process.env;
 const { ACCESS_SECRET_KEY, REFRESH_SECRET_KEY } = process.env;
 
 const login = async (req, res) => {
@@ -28,8 +27,6 @@ const login = async (req, res) => {
   const payload = {
     id,
   };
-
-  // const accessToken = jwt.sign(payload, SECRET_KEY, { expiresIn: "23h" });
 
   const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {
     expiresIn: "1m",

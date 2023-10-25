@@ -2,7 +2,7 @@ const User = require("../../models/user");
 const { ctrlWrapper } = require("../../decorators");
 const { HttpError, sendEmail } = require("../../helpers");
 
-const { BASE_URL } = process.env;
+const { SERVER_URL } = process.env;
 
 const verifyEmail = async (req, res) => {
   const { verificationToken } = req.params;
@@ -35,7 +35,7 @@ const resendVerifyEmail = async (req, res) => {
   const verifyUser = {
     to: email,
     subject: "Verification email",
-    html: `<a target="_blank" href="${BASE_URL}/users/verify/${user.verificationToken}">Click verify email</a>`,
+    html: `<a target="_blank" href="${SERVER_URL}/users/verify/${user.verificationToken}">Click verify email</a>`,
   };
 
   await sendEmail(verifyUser);
