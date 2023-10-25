@@ -382,7 +382,7 @@
     "/todos/priority/{id}": {
       "patch": {
         "tags": ["Todos"],
-        "summary": "Add todo to priority",
+        "summary": "Toggle todo to priority",
         "security": [{ "Bearer": [] }],
         "parameters": [
           {
@@ -395,47 +395,23 @@
         ],
         "responses": {
           "200": {
-            "description": "Todo add to priority successfully",
+            "description": "Todo add to priority successfully / Todo deleted from priority",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Priority"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Not authorized",
-            "content": {}
-          },
-          "404": {
-            "description": "Todo not found",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/todos/priority/delete/{id}": {
-      "patch": {
-        "tags": ["Todos"],
-        "summary": "Delete todo to priority",
-        "security": [{ "Bearer": [] }],
-        "parameters": [
-          {
-            "in": "path",
-            "name": "id",
-            "required": true,
-            "type": "string",
-            "description": "Todo's id"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Todo deleted from priority",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DeleteResponse"
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "description": "Notification of successful operation"
+                    },
+                    "priority": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Priority"
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -508,7 +484,7 @@
                     "priority": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/Priority"
+                        "$ref": "#/components/schemas/TodoResponse"
                       }
                     }
                   }
@@ -757,6 +733,39 @@
             "type": "string",
             "description": "The scheduled date of the case completion.",
             "example": "29.08.2025"
+          },
+          "completedDate": {
+            "type": "string",
+            "description": "Date of completion of the case.",
+            "example": "null",
+            "nullable": true
+          },
+          "overdueDate": {
+            "type": "string",
+            "description": "The overdue date of the case completion.",
+            "example": "null",
+            "nullable": true
+          },
+          "archivedDate": {
+            "type": "string",
+            "description": "Date of transfer of the case to the archive.",
+            "example": "null",
+            "nullable": true
+          },
+          "owner": {
+            "type": "string",
+            "description": "The owner id",
+            "example": "64fafc29a828e21ac9509f90"
+          },
+          "createdAt": {
+            "type": "string",
+            "description": "Date of creation of the item.",
+            "example": "2023-10-19T18:26:29.120Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Date the item was updated.",
+            "example": "2023-10-19T18:26:29.120Z"
           }
         }
       },
